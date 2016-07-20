@@ -93,13 +93,10 @@ def scenes():
                          if len(group_info['lights']))
     scenes_by_group = {}
     for (scene_id, scene_info) in bridge.scenes().iteritems():
-        if scene_info['recycle']:
-            # temporary, ignore? But may refer to all lights, so...
+        if scene_info['recycle']: # temporary, ignore
             continue
         lights_set = lights_as_set(scene_info['lights'])
-        # XXX verify that scenes that don't match a group actually
-        # refer to all lights
-        group_id, group_name = lights_groups.get(lights_set, (0, 'All Lights'))
+        group_id, group_name = lights_groups[lights_set]
         scenes_by_group.setdefault((group_name, group_id), []).append(
             (scene_info['name'], scene_id))
     scenes = collections.OrderedDict(
