@@ -3,7 +3,7 @@
 __all__ = ('lights', 'light', 'item_for_light', 'toggle_item_for_light')
 
 # XXX replace this with either nothing or something that isn't GPLv2
-import collections, qhue
+import collections, qhue, urllib
 
 bridge = qhue.Bridge('192.168.0.14', 'USERNAME')
 
@@ -22,15 +22,18 @@ def item_for_light(light_id, light_info):
         icon='font-awesome:fa-lightbulb-o',
         iconIsTemplate=True)
 
+def action_url(kind, **params):
+    return 'x-launchbar:action/net.sabi.LaunchBar.action.Hue/%s?%s' % (
+        kind, urllib.urlencode(params))
+
 def toggle_item_for_light(light_id, light_info):
     item = item_for_light(light_id, light_info)
     on = bool(light_info['state']['on'])
     want_on = 0 if on else 1
-    url = 'x-launchbar:action/net.sabi.LaunchBar.action.Hue/light?id=%d&on=%d' % (light_id, want_on)
     item.update(
         action='action.py',
         actionReturnsItems=True,
-        url=url)
+        url=action_url('light', id=light_id, on=want_on))
     if on:
         item['badge'] = 'ON'
     return item
