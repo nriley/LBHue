@@ -29,9 +29,6 @@ def toggle_item_for_light(light_id, light_info):
     want_on = 0 if on else 1
     url = 'x-launchbar:action/net.sabi.LaunchBar.action.Hue/light?id=%d&on=%d' % (light_id, want_on)
     item.update(
-        title=light_info['name'],
-        icon='font-awesome:fa-lightbulb-o',
-        iconIsTemplate=True,
         action='action.py',
         actionReturnsItems=True,
         url=url)
