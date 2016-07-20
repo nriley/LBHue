@@ -1,5 +1,5 @@
 __all__ = ('lights', 'light', 'item_for_light', 'toggle_item_for_light',
-           'group', 'scenes_item_for_group',
+           'group', 'item_for_group', 'scenes_item_for_group',
            'scenes', 'scene', 'item_for_scene_name')
 
 import os.path
@@ -102,19 +102,35 @@ def scenes():
         group_id, group_name = lights_groups.get(lights_set, (0, 'All Lights'))
         scenes_by_group.setdefault((group_name, group_id), []).append(
             (scene_info['name'], scene_id))
-    return collections.OrderedDict(
+    scenes = collections.OrderedDict(
         sorted((_, sorted(scenes))
                for (_, scenes) in scenes_by_group.iteritems()))
+    scenes[(None, 0)] = []
+    return scenes
 
 def group(group_id):
     return bridge.groups[group_id]
 
+def item_for_group(group_name, group_id):
+    if group_id is 0:
+        return dict(title='All', icon='font-awesome:cubes')
+    else:
+        return dict(title=group_name, icon='font-awesome:cube')
+
 def scenes_item_for_group((group_name, group_id), scenes_by_group):
-    return dict(
-        title=group_name,
-        icon='font-awesome:cube',
+    item = item_for_group(group_name, group_id)
+    item.update(
         children=[set_item_for_scene(group_id, scene)
-                  for scene in scenes_by_group])
+                  for scene in scenes_by_group] + [
+                          dict(title='All On',
+                               icon='font-awesome:toggle-on',
+                               action='action.py',
+                               url=action_url('group', id=group_id, on=1)),
+                          dict(title='All Off',
+                               icon='font-awesome:toggle-off',
+                               action='action.py',
+                               url=action_url('group', id=group_id, on=0))])
+    return item
 
 def scene(scene_id):
     return bridge.scenes[scene_id]
