@@ -1,5 +1,3 @@
-#!/Users/nicholas/Documents/Development/Hue/bin/python
-
 import hue, json
 
 lights = hue.lights()

@@ -8,6 +8,10 @@
 # Python
 *.pyc
 *.pyo
+.Python
+bin/
+lib/
+include/
 
 # OS X code signatures
 _CodeSignature/

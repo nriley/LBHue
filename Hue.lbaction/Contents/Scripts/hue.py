@@ -1,8 +1,10 @@
-#!/Users/nicholas/Documents/Development/Hue/bin/python
-
 __all__ = ('lights', 'light', 'item_for_light', 'toggle_item_for_light',
            'group', 'scenes_item_for_group',
            'scenes', 'scene', 'item_for_scene_name')
+
+import os.path
+activate_this = os.path.join(os.path.dirname(__file__), 'bin/activate_this.py')
+execfile(activate_this, dict(__file__=activate_this))
 
 HUE_PRODUCTS = dict(
     LLC014='aura',
