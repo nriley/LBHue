@@ -1,0 +1,13 @@
+# Emacs
+*~
+\#*
+
+# DS stuff
+.DS_Store
+
+# Python
+*.pyc
+*.pyo
+
+# OS X code signatures
+_CodeSignature/
