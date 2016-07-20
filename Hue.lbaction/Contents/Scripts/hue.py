@@ -17,11 +17,10 @@ def light(light_id):
     return bridge.lights[light_id]
 
 def item_for_light(light_id, light_info):
-    item = dict(
+    return dict(
         title=light_info['name'],
         icon='font-awesome:fa-lightbulb-o',
         iconIsTemplate=True)
-    return item
 
 def toggle_item_for_light(light_id, light_info):
     item = item_for_light(light_id, light_info)
