@@ -47,6 +47,10 @@ HUE_PRODUCTS = dict(
     LWB010='white_e27_b22',
     LWB014='white_e27_b22')
 
+HUE_ROOMS=['bathroom', 'bedroom', 'carport', 'dining', 'driveway', 'frontdoor',
+           'garage', 'garden', 'gym', 'hallway', 'kids_bedroom', 'kitchen',
+           'living', 'nursery', 'office', 'recreation', 'terrace', 'toilet']
+
 # XXX replace qhue with either nothing or something that isn't GPLv2
 import collections, qhue, urllib
 
@@ -111,8 +115,15 @@ def group(group_id):
 def item_for_group(group_name, group_id):
     if group_id is 0:
         return dict(title='All', icon='font-awesome:cubes')
+
+    lower_name = group_name.lower()
+    for room in HUE_ROOMS:
+        if room in lower_name:
+            icon = room
+            break
     else:
-        return dict(title=group_name, icon='font-awesome:cube')
+        icon = 'other'
+    return dict(title=group_name, icon=icon, iconIsTemplate=True)
 
 def scenes_item_for_group((group_name, group_id), scenes_by_group):
     item = item_for_group(group_name, group_id)
