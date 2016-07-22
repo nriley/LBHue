@@ -35,7 +35,7 @@ elif kind == 'group':
 
     if on is not None:
         group.action(on=on)
-        item = hue.item_for_group(group()['name'], group_id)
+        item = hue.item_for_group(group_id, group())
         item['title'] = '%s lights are now %s' % (item['title'], on_or_off)
 
 print json.dumps(item)

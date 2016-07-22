@@ -92,30 +92,35 @@ def toggle_item_for_light(light_id, light_info):
 def scenes():
     def lights_as_set(lights):
         return frozenset(map(int, lights))
-    lights_groups = dict((lights_as_set(group_info['lights']), (int(group_id), group_info['name']))
-                         for (group_id, group_info) in bridge.groups().iteritems()
-                         if len(group_info['lights']))
+    lights_groups = dict(
+        (lights_as_set(group_info['lights']),
+         (int(group_id), group_info))
+        for (group_id, group_info) in bridge.groups().iteritems()
+        if len(group_info['lights']))
     scenes_by_group = {}
     for (scene_id, scene_info) in bridge.scenes().iteritems():
         if scene_info['recycle']: # temporary, ignore
             continue
         lights_set = lights_as_set(scene_info['lights'])
-        group_id, group_name = lights_groups[lights_set]
-        scenes_by_group.setdefault((group_name, group_id), []).append(
-            (scene_info['name'], scene_id))
-    scenes = collections.OrderedDict(
-        sorted((_, sorted(scenes))
-               for (_, scenes) in scenes_by_group.iteritems()))
-    scenes[(None, 0)] = []
-    return scenes
+        group_id, group_info = lights_groups[lights_set]
+        group_name = group_info['name']
+        scenes_by_group.setdefault(
+            (group_name, group_id), (group_info, []))[1].append(
+                (scene_info['name'], scene_id))
+    scenes_by_group = collections.OrderedDict(
+        sorted((_, (group_info, sorted(scenes)))
+               for (_, (group_info, scenes)) in scenes_by_group.iteritems()))
+    scenes_by_group[(None, 0)] = ({}, [])
+    return scenes_by_group
 
 def group(group_id):
     return bridge.groups[group_id]
 
-def item_for_group(group_name, group_id):
+def item_for_group(group_id, group_info):
     if group_id is 0:
         return dict(title='All', icon='font-awesome:cubes')
 
+    group_name = group_info['name']
     lower_name = group_name.lower()
     for room in HUE_ROOMS:
         if room in lower_name:
@@ -123,13 +128,19 @@ def item_for_group(group_name, group_id):
             break
     else:
         icon = 'other'
-    return dict(title=group_name, icon=icon, iconIsTemplate=True)
+    item = dict(title=group_name, icon=icon, iconIsTemplate=True)
+    state = group_info['state']
+    if bool(state['all_on']):
+        item['badge'] = 'ALL ON'
+    elif bool(state['any_on']):
+        item['badge'] = 'ON'
+    return item
 
-def scenes_item_for_group((group_name, group_id), scenes_by_group):
-    item = item_for_group(group_name, group_id)
+def scenes_item_for_group((group_name, group_id), (group_info, group_scenes)):
+    item = item_for_group(group_id, group_info)
     item.update(
         children=[set_item_for_scene(group_id, scene)
-                  for scene in scenes_by_group] + [
+                  for scene in group_scenes] + [
                           dict(title='All On',
                                icon='font-awesome:toggle-on',
                                action='action.py',
