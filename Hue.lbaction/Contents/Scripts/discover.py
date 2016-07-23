@@ -4,12 +4,12 @@ execfile(activate_this, dict(__file__=activate_this))
 
 import json
 
-def item_for_description(description):
-    device_info = description['device']
+def item_for_description(desc):
+    device_info = desc['device']
     return dict(
         action='connect.py',
-        actionArgument=description['URLBase'],
-        title='Connect to ' + device_info['friendlyName'],
+        actionArgument=desc['URLBase'] + '#' + device_info['serialNumber'],
+        title='Link to ' + device_info['friendlyName'],
         icon='bridge_v1.pdf' if device_info['modelNumber'] == '929000226503'
         else 'bridge_v2.pdf',
         iconIsTemplate=True,
@@ -26,7 +26,7 @@ def nupnp_discover():
         bridges = response.json()
         for bridge in bridges:
             url = 'http://%s/description.xml' % bridge['internalipaddress']
-            xml = ElementTree.fromstring(requests.get(url).text)
+            xml = ElementTree.fromstring(requests.get(url, timeout=1).text)
             description = etree_to_dict(xml)['root']
             items.append(item_for_description(description))
     except requests.exceptions.RequestException:
@@ -35,8 +35,7 @@ def nupnp_discover():
     return items
 
 def ssdp_discover():
-    # yuck; another alternative would be to mock up netdis and scan SSDP
-    # directly
+    # yuck; alternative would be to mock netdis and scan SSDP directly
     import netdisco.ssdp
     original_scan = netdisco.ssdp.scan
     def scan(st=None, timeout=2, max_entries=None):

@@ -1,10 +1,7 @@
 __all__ = ('lights', 'light', 'item_for_light', 'toggle_item_for_light',
            'group', 'item_for_group', 'scenes_item_for_group',
-           'scenes', 'scene', 'item_for_scene_name')
-
-import os.path
-activate_this = os.path.join(os.path.dirname(__file__), 'bin/activate_this.py')
-execfile(activate_this, dict(__file__=activate_this))
+           'scenes', 'scene', 'item_for_scene_name',
+           'connected')
 
 HUE_PRODUCTS = dict(
     LLC014='aura',
@@ -51,10 +48,13 @@ HUE_ROOMS=['bathroom', 'bedroom', 'carport', 'dining', 'driveway', 'frontdoor',
            'garage', 'garden', 'gym', 'hallway', 'kids_bedroom', 'kitchen',
            'living', 'nursery', 'office', 'recreation', 'terrace', 'toilet']
 
-# XXX replace qhue with either nothing or something that isn't GPLv2
-import collections, qhue, urllib
+import collections, urllib
+import bridges
 
-bridge = qhue.Bridge('192.168.0.14', 'USERNAME')
+bridge = bridges.current()
+
+def connected():
+    return bool(bridge)
 
 def lights():
     lights = dict((light_info['name'], (int(light_id), light_info))
