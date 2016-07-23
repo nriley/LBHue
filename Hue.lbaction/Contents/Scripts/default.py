@@ -11,4 +11,8 @@ items = [dict(title='Rooms & Scenes',
 for (light_name, (light_id, light_info)) in lights.iteritems():
     items.append(hue.toggle_item_for_light(light_id, light_info))
 
+items.append(dict(title='Connect to Bridge...',
+                  action='discover.py',
+                  actionReturnsItems=True))
+
 print json.dumps(items)
