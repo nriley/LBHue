@@ -28,7 +28,7 @@
 		<string>https://sabi.net/nriley/software/#launchbar</string>
 	</dict>
 	<key>LBMinimumLaunchBarVersion</key>
-	<integer>6</integer>
+	<integer>6135</integer>
 	<key>LBRequirements</key>
 	<string>Philips hue</string>
 	<key>LBResult</key>
