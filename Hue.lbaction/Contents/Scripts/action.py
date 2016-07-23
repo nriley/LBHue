@@ -6,7 +6,8 @@ if input[0] == '{':
 
 url = urlparse.urlparse(input)
 kind = url.path.split('/')[-1]
-query = dict((k, v[0]) for k, v in urlparse.parse_qs(url.query).iteritems() if len(v) == 1)
+query = dict((k, v[0]) for k, v in urlparse.parse_qs(url.query).iteritems()
+             if len(v) == 1)
 
 on = query.get('on')
 if on is not None:
