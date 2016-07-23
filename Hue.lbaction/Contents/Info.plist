@@ -17,11 +17,11 @@
 		<key>LBEmail</key>
 		<string>launchbar@sabi.net</string>
 		<key>LBRequirements</key>
-		<string>Philips hue</string>
+		<string>Philips Hue bridge on your local network</string>
 		<key>LBResult</key>
-		<string>The list of Hue lights.</string>
+		<string>A list of Hue-related actions.</string>
 		<key>LBSummary</key>
-		<string>This action returns a list of Hue lights and lets you toggle them.</string>
+		<string>This action lets you turn on and off Hue lights and trigger scenes.</string>
 		<key>LBTwitter</key>
 		<string>@nriley</string>
 		<key>LBWebsiteURL</key>
@@ -29,10 +29,6 @@
 	</dict>
 	<key>LBMinimumLaunchBarVersion</key>
 	<integer>6135</integer>
-	<key>LBRequirements</key>
-	<string>Philips hue</string>
-	<key>LBResult</key>
-	<string>The list of Hue lights.</string>
 	<key>LBScripts</key>
 	<dict>
 		<key>LBActionURLScript</key>
