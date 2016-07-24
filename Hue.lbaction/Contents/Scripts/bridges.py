@@ -1,3 +1,5 @@
+__all__ = ('current', 'get')
+
 import os.path
 activate_this = os.path.join(os.path.dirname(__file__), 'bin/activate_this.py')
 execfile(activate_this, dict(__file__=activate_this))
