@@ -57,8 +57,7 @@ class HueAPI(object):
         else:
             response = requests.request(method, url, timeout=2)
 
-        if response.status_code != 200:
-            raise Exception() # XXX
+        response.raise_for_status()
 
         response_json = response.json()
         # print response_json
