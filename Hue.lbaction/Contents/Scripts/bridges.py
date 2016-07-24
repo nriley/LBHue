@@ -52,8 +52,7 @@ class HueAPI(object):
             method = 'PUT' if kw else 'GET'
 
         if kw:
-            response = requests.request(method, url, data=json.dumps(kw),
-                                        timeout=2)
+            response = requests.request(method, url, json=kw, timeout=2)
         else:
             response = requests.request(method, url, timeout=2)
 
