@@ -1,7 +1,7 @@
 # LBHue
 A LaunchBar action for controlling Philips hue lights.
 
-Please note that this is a beta version (with known bugs), but if you
+Please note that this is a beta version, but if you
 want to try it out, you are welcome.  If you're interested in
 developing it, you'll need to build a
 [virtualenv](https://virtualenv.pypa.io/en/stable/) as follows:
