@@ -1,9 +1,9 @@
 # LBHue
 A LaunchBar action for controlling Philips hue lights.
 
-Please note that this is an alpha (with known bugs), but if you want
-to try it out, you are welcome.  If you're interested in developing
-it, you'll need to build a
+Please note that this is a beta version (with known bugs), but if you
+want to try it out, you are welcome.  If you're interested in
+developing it, you'll need to build a
 [virtualenv](https://virtualenv.pypa.io/en/stable/) as follows:
 
 ```
@@ -11,7 +11,7 @@ cd Hue.lbaction/Contents/Scripts
 virtualenv --system-site-packages .
 virtualenv --relocatable .
 source bin/activate
-pip install netdisco
+pip install -r ../../../requirements.txt
 ```
 
 You should then be able to open `Hue.lbaction` and add it to LaunchBar.
