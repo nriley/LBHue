@@ -19,8 +19,7 @@ except Exception, e:
 if not bridges:
     bridges = dict(all={})
 
-# handle bridge unavailable
-# handle bridge changed IP address
+# XXX automatically handle bridge changed IP address?
 
 class HueException(Exception):
     LINK_BUTTON_NOT_PRESSED = 101
@@ -51,10 +50,14 @@ class HueAPI(object):
         if method is None:
             method = 'PUT' if kw else 'GET'
 
-        if kw:
-            response = requests.request(method, url, json=kw, timeout=2)
-        else:
-            response = requests.request(method, url, timeout=2)
+        try:
+            if kw:
+                response = requests.request(method, url, json=kw, timeout=2)
+            else:
+                response = requests.request(method, url, timeout=2)
+        except requests.ConnectionError, e:
+            print >> sys.stderr, e
+            exit_with_connection_error()
 
         response.raise_for_status()
 
@@ -64,7 +67,6 @@ class HueAPI(object):
         if type(response_json) is list:
             errors = [r['error'] for r in response_json
                       if type(r) is dict and 'error' in r]
-            # XXX handle errors 1 and 101
             if errors:
                 raise HueException(*errors)
 
@@ -203,3 +205,11 @@ def current():
 
 def save():
     json.dump(bridges, file(bridges_path, 'w'))
+
+# If we get a connection error, offer to relink a bridge
+def exit_with_connection_error():
+    import discover
+    item = discover.discover_item('Unable to connect. Relink bridge?')
+
+    print json.dumps(item)
+    sys.exit(0)

@@ -1,8 +1,7 @@
-import os.path
-activate_this = os.path.join(os.path.dirname(__file__), 'bin/activate_this.py')
-execfile(activate_this, dict(__file__=activate_this))
+__all__ = ('discover_item',)
 
-import json
+def discover_item(title='Link Bridge'):
+    return dict(title=title, action='discover.py', actionReturnsItems=True)
 
 def item_for_description(desc):
     device_info = desc['device']
@@ -55,9 +54,19 @@ def ssdp_discover():
             if entry.st == 'upnp:rootdevice']
 
 if __name__ == '__main__':
+    import os.path
+    activate_this = os.path.join(os.path.dirname(__file__),
+                                 'bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+
+    import json
+
     items = nupnp_discover()
 
     if not items:
         items = ssdp_discover()
+
+    if not items:
+        items = discover_item('No bridges found. Rescan for bridges?')
 
     print json.dumps(items)
