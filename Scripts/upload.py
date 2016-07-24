@@ -5,14 +5,34 @@ import compileall
 import distutils.version
 import json
 import os
+import pip
 import plistlib
 import subprocess
 import sys
+import tempfile
 import urllib
+import virtualenv
 import webbrowser
 
-def compile_scripts(bundle_path):
+def export_bundle(bundle_path):
+    toplevel_path = subprocess.check_output(
+        ['git', 'rev-parse', '--show-toplevel']).rstrip()
+    git = ['git', '-C', toplevel_path]
+    dest_path = tempfile.mkdtemp()
+    ls_files = subprocess.Popen(git +
+        ['ls-files', '-cz', bundle_path], stdout=subprocess.PIPE)
+    checkout_index = subprocess.Popen(git +
+        ['checkout-index', '--prefix=%s/'% dest_path, '--stdin', '-z'],
+        stdin=ls_files.stdout)
+    ls_files.stdout.close()
+    checkout_index.communicate()
+    return os.path.abspath(os.path.join(dest_path, bundle_path))
+
+def create_virtualenv(bundle_path, requirements_path):
     scripts_path = os.path.join(bundle_path, 'Contents', 'Scripts')
+    virtualenv.create_environment(scripts_path, site_packages=True)
+    virtualenv.make_environment_relocatable(scripts_path)
+    pip.main(['install', '--prefix', scripts_path, '-r', requirements_path])
     compileall.compile_dir(scripts_path, maxlevels=0)
 
 def update_bundle_version(bundle_path, version):
@@ -78,12 +98,19 @@ def upload_release(repo, version, archive_path, github_access_token):
 def release(version, github_access_token):
     project_path = os.path.join(os.path.dirname(__file__), '..')
     action_path = os.path.join(project_path, 'Hue.lbaction')
-
-    compile_scripts(action_path)
     update_bundle_version(action_path, version)
-    sign_bundle(action_path)
 
-    archive_path = archive_bundle(action_path, version)
+    # exported version is equivalent to committed version
+    export_path = export_bundle(action_path)
+    # except for version number
+    update_bundle_version(export_path, version)
+
+    requirements_path = os.path.join(project_path, 'requirements.txt')
+    create_virtualenv(export_path, requirements_path)
+
+    sign_bundle(export_path)
+
+    archive_path = archive_bundle(export_path, version)
     html_url = upload_release('nriley/LBHue', version, archive_path,
                               github_access_token)
 
