@@ -22,3 +22,14 @@ the LaunchBar environment as follows (or your shell's equivalent):
 ```
 export LB_SUPPORT_PATH=~/'Library/Application Support/LaunchBar/Action Support/net.sabi.LaunchBar.action.Hue'
 ```
+
+## Screenshots
+
+### The main list
+![](https://github.com/nriley/LBHue/blob/master/Screenshots/main.png)
+
+### Rooms & Scenes
+![](https://github.com/nriley/LBHue/blob/master/Screenshots/rooms.png)
+
+### A room
+![](https://github.com/nriley/LBHue/blob/master/Screenshots/room.png)
