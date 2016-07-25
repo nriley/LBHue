@@ -9,11 +9,17 @@
 	<key>CFBundleName</key>
 	<string>Hue</string>
 	<key>CFBundleVersion</key>
-	<string>1.0b1</string>
+	<string>1.0b2</string>
 	<key>LBDescription</key>
 	<dict>
 		<key>LBAuthor</key>
 		<string>Nicholas Riley</string>
+		<key>LBChangelog</key>
+		<string>
+                  1.0b2: Add support for action updates.
+                </string>
+		<key>LBDownloadURL</key>
+		<string>https://github.com/nriley/LBHue/releases/download/v1.0b2/Hue-1.0b2.lbaction</string>
 		<key>LBEmail</key>
 		<string>launchbar@sabi.net</string>
 		<key>LBRequirements</key>
@@ -24,6 +30,8 @@
 		<string>This action lets you turn on and off Hue lights and trigger scenes.</string>
 		<key>LBTwitter</key>
 		<string>@nriley</string>
+		<key>LBUpdateURL</key>
+		<string>https://raw.githubusercontent.com/nriley/LBHue/master/Hue.lbaction/Contents/Info.plist</string>
 		<key>LBWebsiteURL</key>
 		<string>https://sabi.net/nriley/software/#launchbar</string>
 	</dict>
