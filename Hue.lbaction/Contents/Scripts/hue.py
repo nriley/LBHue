@@ -102,7 +102,9 @@ def scenes():
         if scene_info['recycle']: # temporary, ignore
             continue
         lights_set = lights_as_set(scene_info['lights'])
-        group_id, group_info = lights_groups[lights_set]
+        group_id, group_info = lights_groups.get(lights_set, (None, None))
+        if group_id is None:
+            continue
         group_name = group_info['name']
         scenes_by_group.setdefault(
             (group_name, group_id), (group_info, []))[1].append(
