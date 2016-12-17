@@ -9,17 +9,19 @@
 	<key>CFBundleName</key>
 	<string>Hue</string>
 	<key>CFBundleVersion</key>
-	<string>1.0b2</string>
+	<string>1.0b3</string>
 	<key>LBDescription</key>
 	<dict>
 		<key>LBAuthor</key>
 		<string>Nicholas Riley</string>
 		<key>LBChangelog</key>
 		<string>
+                  1.0b3: Ignore scenes whose lights don’t match any known group (fixes some crashes).
+
                   1.0b2: Add support for action updates.
                 </string>
 		<key>LBDownloadURL</key>
-		<string>https://github.com/nriley/LBHue/releases/download/v1.0b2/Hue-1.0b2.lbaction</string>
+		<string>https://github.com/nriley/LBHue/releases/download/v1.0b3/Hue-1.0b3.lbaction</string>
 		<key>LBEmail</key>
 		<string>launchbar@sabi.net</string>
 		<key>LBRequirements</key>
